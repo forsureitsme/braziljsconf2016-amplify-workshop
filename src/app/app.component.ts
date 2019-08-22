@@ -1,10 +1,20 @@
-import { Component } from '@angular/core';
+import { APIService } from '../API';
+import { Restaurant } from './types/restaurant';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: `
+    <div>
+      <div *ngFor="let restaurant of restaurants">
+        {{ restaurant.name }}
+      </div>
+    </div>`
 })
-export class AppComponent {
-  title = 'amplify-app';
+export class AppComponent implements OnInit {
+  restaurants: Array<Restaurant>;
+  constructor(public api: APIService) { }
+  ngOnInit() {
+    this.api.ListRestaurants().then(data => {
+      this.restaurants = data.items;
+    });
+  }
 }
